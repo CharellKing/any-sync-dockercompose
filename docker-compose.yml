@@ -76,7 +76,7 @@ services:
           - "${MINIO_BUCKET}.minio" # <bucket-name>.<endpoint-name>
 
   create-bucket:
-    image: dockerproxy.net/minio/mc:latest
+    image: minio/mc:latest
     depends_on:
       - minio
     entrypoint: >
