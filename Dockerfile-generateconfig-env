@@ -2,5 +2,5 @@
 FROM python:3.11-alpine
 WORKDIR /code
 COPY docker-generateconfig/env-requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ENTRYPOINT ["python", "/code/docker-generateconfig/env.py"]

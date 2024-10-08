@@ -54,7 +54,7 @@ services:
       retries: 3
 
   minio:
-    image: "minio/minio:${MINIO_VERSION}"
+    image: "dockerproxy.net/minio/minio:${MINIO_VERSION}"
     restart: unless-stopped
     command: ["server", "/data", "--console-address", ":${MINIO_WEB_PORT}", "--address", ":${MINIO_PORT}"]
     environment:
@@ -76,7 +76,7 @@ services:
           - "${MINIO_BUCKET}.minio" # <bucket-name>.<endpoint-name>
 
   create-bucket:
-    image: minio/mc:latest
+    image: dockerproxy.net/minio/mc:latest
     depends_on:
       - minio
     entrypoint: >
@@ -87,7 +87,7 @@ services:
       "
 
   any-sync-coordinator_bootstrap:
-    image: "ghcr.io/anyproto/any-sync-coordinator:${ANY_SYNC_COORDINATOR_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-coordinator:${ANY_SYNC_COORDINATOR_VERSION}"
     depends_on:
       generateconfig-processing:
         condition: service_completed_successfully
@@ -99,7 +99,7 @@ services:
     command: ["/bin/any-sync-confapply", "-c", "/etc/any-sync-coordinator/config.yml", "-n", "/etc/any-sync-coordinator/network.yml", "-e"]
 
   any-sync-coordinator:
-    image: "ghcr.io/anyproto/any-sync-coordinator:${ANY_SYNC_COORDINATOR_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-coordinator:${ANY_SYNC_COORDINATOR_VERSION}"
     depends_on:
       generateconfig-processing:
         condition: service_completed_successfully
@@ -121,7 +121,7 @@ services:
     restart: unless-stopped
 
   any-sync-filenode:
-    image: "ghcr.io/anyproto/any-sync-filenode:${ANY_SYNC_FILENODE_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-filenode:${ANY_SYNC_FILENODE_VERSION}"
     depends_on:
       redis:
         condition: service_healthy
@@ -144,7 +144,7 @@ services:
     restart: unless-stopped
 
   any-sync-node-1:
-    image: "ghcr.io/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
     depends_on:
       any-sync-coordinator:
         condition: service_started
@@ -164,7 +164,7 @@ services:
     restart: unless-stopped
 
   any-sync-node-2:
-    image: "ghcr.io/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
     depends_on:
       any-sync-coordinator:
         condition: service_started
@@ -184,7 +184,7 @@ services:
     restart: unless-stopped
 
   any-sync-node-3:
-    image: "ghcr.io/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-node:${ANY_SYNC_NODE_VERSION}"
     depends_on:
       any-sync-coordinator:
         condition: service_started
@@ -204,7 +204,7 @@ services:
     restart: unless-stopped
 
   any-sync-consensusnode:
-    image: "ghcr.io/anyproto/any-sync-consensusnode:${ANY_SYNC_CONSENSUSNODE_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-consensusnode:${ANY_SYNC_CONSENSUSNODE_VERSION}"
     depends_on:
       any-sync-coordinator:
         condition: service_started
@@ -223,7 +223,7 @@ services:
 
   # any-sync-netcheck
   netcheck:
-    image: "ghcr.io/anyproto/any-sync-tools:${ANY_SYNC_TOOLS_VERSION}"
+    image: "ghcr.dockerproxy.net/anyproto/any-sync-tools:${ANY_SYNC_TOOLS_VERSION}"
     restart: unless-stopped
     depends_on:
       - any-sync-consensusnode

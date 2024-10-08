@@ -1,4 +1,4 @@
-FROM golang:1.22
+FROM dockerproxy.net/library/golang:1.22
 
 ARG REPO_DIR=.
 
